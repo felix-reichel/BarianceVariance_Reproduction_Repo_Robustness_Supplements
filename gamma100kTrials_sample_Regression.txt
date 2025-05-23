@@ -1,0 +1,130 @@
+df_sample = df.sample(n=50000, random_state=42)
+
+model_sample = smf.ols("RuntimeNs ~ C(Estimator) + C(SampleSize)", data=df_sample).fit()
+
+model_sample.summary()
+
+
+
+
+
+<class 'statsmodels.iolib.summary.Summary'>
+"""
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:              RuntimeNs   R-squared:                       0.026
+Model:                            OLS   Adj. R-squared:                  0.026
+Method:                 Least Squares   F-statistic:                     149.8
+Date:                Fri, 23 May 2025   Prob (F-statistic):          8.31e-281
+Time:                        13:22:27   Log-Likelihood:            -3.3400e+05
+No. Observations:               50000   AIC:                         6.680e+05
+Df Residuals:                   49990   BIC:                         6.681e+05
+Df Model:                           9                                         
+Covariance Type:            nonrobust                                         
+============================================================================================
+                               coef    std err          t      P>|t|      [0.025      0.975]
+--------------------------------------------------------------------------------------------
+Intercept                   88.6013      2.708     32.724      0.000      83.295      93.908
+C(Estimator)[T.Unbiased]    27.9131      1.724     16.192      0.000      24.534      31.292
+C(SampleSize)[T.500]       -51.9662      3.665    -14.179      0.000     -59.150     -44.783
+C(SampleSize)[T.1000]      -88.0052      3.646    -24.136      0.000     -95.152     -80.859
+C(SampleSize)[T.2000]      -85.7651      3.641    -23.556      0.000     -92.901     -78.629
+C(SampleSize)[T.10000]     -84.6164      3.644    -23.224      0.000     -91.758     -77.475
+C(SampleSize)[T.20000]     -86.1891      3.646    -23.640      0.000     -93.335     -79.043
+C(SampleSize)[T.40000]     -79.2407      3.652    -21.695      0.000     -86.399     -72.082
+C(SampleSize)[T.100000]    -61.9015      3.637    -17.022      0.000     -69.029     -54.774
+C(SampleSize)[T.500000]    -35.3580      3.645     -9.700      0.000     -42.502     -28.214
+==============================================================================
+Omnibus:                   100654.427   Durbin-Watson:                   2.006
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):        239624781.602
+Skew:                          16.857   Prob(JB):                         0.00
+Kurtosis:                     340.466   Cond. No.                         11.1
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+"""
+
+
+
+
+
+
+
+
+
+
+
+Die ZWEITE:
+
+
+
+
+
+
+<class 'statsmodels.iolib.summary.Summary'>
+"""
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:              RuntimeNs   R-squared:                       0.026
+Model:                            OLS   Adj. R-squared:                  0.026
+Method:                 Least Squares   F-statistic:                     149.8
+Date:                Fri, 23 May 2025   Prob (F-statistic):          8.31e-281
+Time:                        13:22:27   Log-Likelihood:            -3.3400e+05
+No. Observations:               50000   AIC:                         6.680e+05
+Df Residuals:                   49990   BIC:                         6.681e+05
+Df Model:                           9                                         
+Covariance Type:            nonrobust                                         
+============================================================================================
+                               coef    std err          t      P>|t|      [0.025      0.975]
+--------------------------------------------------------------------------------------------
+Intercept                   88.6013      2.708     32.724      0.000      83.295      93.908
+C(Estimator)[T.Unbiased]    27.9131      1.724     16.192      0.000      24.534      31.292
+C(SampleSize)[T.500]       -51.9662      3.665    -14.179      0.000     -59.150     -44.783
+C(SampleSize)[T.1000]      -88.0052      3.646    -24.136      0.000     -95.152     -80.859
+C(SampleSize)[T.2000]      -85.7651      3.641    -23.556      0.000     -92.901     -78.629
+C(SampleSize)[T.10000]     -84.6164      3.644    -23.224      0.000     -91.758     -77.475
+C(SampleSize)[T.20000]     -86.1891      3.646    -23.640      0.000     -93.335     -79.043
+C(SampleSize)[T.40000]     -79.2407      3.652    -21.695      0.000     -86.399     -72.082
+C(SampleSize)[T.100000]    -61.9015      3.637    -17.022      0.000     -69.029     -54.774
+C(SampleSize)[T.500000]    -35.3580      3.645     -9.700      0.000     -42.502     -28.214
+==============================================================================
+Omnibus:                   100654.427   Durbin-Watson:                   2.006
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):        239624781.602
+Skew:                          16.857   Prob(JB):                         0.00
+Kurtosis:                     340.466   Cond. No.                         11.1
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+
+
+\begin{table}[htbp]
+\centering
+\caption{Regression of Runtime on Estimator and Sample Size (Fixed Effects)}
+\label{tab:regression}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Variable} & \textbf{Coefficient} & \textbf{Robust SE} & \textbf{t-Statistic} & \textbf{p-value} \\
+\midrule
+Intercept & 88.60 & 1.46 & 60.61 & 0.000*** \\
+Estimator: Unbiased & 27.91 & 1.74 & 16.07 & 0.000*** \\
+Sample Size: 500 & -51.97 & 2.81 & -18.49 & 0.000*** \\
+Sample Size: 1000 & -88.01 & 1.29 & -68.12 & 0.000*** \\
+Sample Size: 2000 & -85.77 & 1.93 & -44.34 & 0.000*** \\
+Sample Size: 10000 & -84.62 & 1.57 & -54.06 & 0.000*** \\
+Sample Size: 20000 & -86.19 & 1.38 & -62.60 & 0.000*** \\
+Sample Size: 40000 & -79.24 & 2.60 & -30.50 & 0.000*** \\
+Sample Size: 100000 & -61.90 & 4.11 & -15.05 & 0.000*** \\
+Sample Size: 500000 & -35.36 & 5.44 & -6.49 & 0.000*** \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\small
+\item \textit{Notes:} The dependent variable is runtime in nanoseconds. The treatment variable is \textbf{Estimator}, with ``BarianceOpt'' as the baseline. Fixed effects are included for each \textbf{Sample Size}. Robust standard errors are reported (HC3). Significance levels: * $p<0.05$, ** $p<0.01$, *** $p<0.001$.
+\end{tablenotes}
+\end{table}
+
+
+"""

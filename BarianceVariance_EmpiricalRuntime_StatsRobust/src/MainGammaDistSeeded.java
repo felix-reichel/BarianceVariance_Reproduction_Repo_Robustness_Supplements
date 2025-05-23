@@ -4,17 +4,22 @@ import java.util.Random;
 
 public class MainGammaDistSeeded {
 
-    static int[] sampleSizes = {1000, 5000, 10000, 20000, 100000, 200000, 400000, 1000000, 5000000};
+    static int[] sampleSizes = {100, 500, 1000, 2000, 10000, 20000, 40000, 100000, 500000};
 
     public static void main(String[] args) throws IOException {
-        int trials = 100;
+        int trials = 1000;
         long seed = 42L;
         Random rand = new Random(seed);
 
-        FileWriter writer = new FileWriter("./variance_bariance_runtime_gamma.csv");
+        FileWriter writer = new FileWriter("./variance_bariance_runtime_gamma_1k_trials.csv");
         writer.write("SampleSize,Trial,Estimator,RuntimeNs\n");
 
+        System.out.println("Starting benchmark with " + trials + " trials per sample size...");
+
         for (int n : sampleSizes) {
+            System.out.println("Starting sample size: " + n);
+            long sampleStart = System.currentTimeMillis();
+
             for (int t = 0; t < trials; t++) {
                 double[] data = new double[n];
                 for (int i = 0; i < n; i++) {
@@ -30,11 +35,19 @@ public class MainGammaDistSeeded {
                 double bar = optimizedBariance(data);
                 long end2 = System.nanoTime();
                 writer.write(n + "," + t + ",BarianceOpt," + (end2 - start2) + "\n");
+
+                // Periodic progress update
+                if (t > 0 && t % (trials / 10) == 0) {
+                    System.out.println("  Trial " + t + "/" + trials + " completed for n=" + n);
+                }
             }
+
+            long sampleEnd = System.currentTimeMillis();
+            System.out.println("Completed sample size " + n + " in " + (sampleEnd - sampleStart) + " ms");
         }
 
         writer.close();
-        System.out.println("Benchmark complete. Data written to variance_bariance_runtime_gamma.csv");
+        System.out.println("Benchmark complete. Data written to variance_bariance_runtime_gamma_100k_trials.csv");
         reportSystemInfo();
     }
 
@@ -62,7 +75,6 @@ public class MainGammaDistSeeded {
     // Gamma distribution using Marsaglia and Tsang's method for shape >= 1
     public static double nextGamma(Random rand, double shape, double scale) {
         if (shape < 1) {
-            // Use Johnk's generator for shape < 1
             double c = 1.0 / shape;
             double d = (1.0 - shape) * Math.pow(shape, shape / (1.0 - shape));
             while (true) {
