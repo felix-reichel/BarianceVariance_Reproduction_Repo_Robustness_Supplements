@@ -1,0 +1,38 @@
+# Create a grid of KDE plots
+plt.style.use('classic')
+plt.rcParams.update({
+    "font.family": "serif",
+    "axes.titlesize": 12,
+    "axes.labelsize": 10,
+    "legend.fontsize": 9,
+    "xtick.labelsize": 8,
+    "ytick.labelsize": 8,
+    "axes.edgecolor": "black",
+    "axes.linewidth": 1,
+    "grid.linewidth": 0.5,
+})
+
+stata_colors = {'Unbiased': 'black', 'BarianceOpt': 'gray'}
+
+fig = plt.figure(figsize=(20, 4 * n_rows))
+gs = gridspec.GridSpec(n_rows, n_cols, figure=fig)
+
+for idx, size in enumerate(sample_sizes):
+    ax = fig.add_subplot(gs[idx // n_cols, idx % n_cols])
+    for estimator in df['Estimator'].unique():
+        subset = df[(df['SampleSize'] == size) & (df['Estimator'] == estimator)]
+        data = subset['RuntimeNs'].dropna().values
+
+        if len(data) > 1 and np.std(data) > 0:
+            kde = gaussian_kde(data)
+            x_vals = np.linspace(min(data), max(data), 200)
+            y_vals = kde(x_vals)
+            ax.plot(x_vals, y_vals, label=estimator, color=stata_colors[estimator], linewidth=1)
+
+    ax.set_title(f'Sample Size: {size}')
+    ax.set_xlabel('Runtime (ns)')
+    ax.set_ylabel('Density')
+    ax.legend(frameon=False)
+
+plt.tight_layout()
+plt.show()
